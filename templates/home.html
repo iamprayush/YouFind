@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+  <head>
+    <title>YouFind</title>
+
+    <!-- Bootstrap core CSS -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'youfind/bootstrap.min.css' %}"
+    />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'youfind/styles.css' %}"
+    />
+  </head>
+
+  <body>
+    <div class="col p-5">
+      <div class="row p-5">
+        <h1 class="logo pr-5">YouFind</h1>
+
+        <form
+          class="form-inline mt-2 mt-md-0"
+          method="POST"
+          action="{% url 'home' %}"
+        >
+          {% csrf_token %}
+          <input
+            class="form-control mr-sm-2"
+            type="text"
+            name="video_url"
+            placeholder="Youtube URL"
+          />
+          <input
+            class="form-control mr-sm-4"
+            type="text"
+            name="keyword"
+            placeholder="Keyword to search"
+          />
+          <button class="btn btn-info my-2 my-sm-0" type="submit">
+            Search
+          </button>
+        </form>
+      </div>
+      <div class="row pl-5">
+        <iframe
+          width="1000"
+          height="450"
+          src="{{ video_embed_url }}"
+          allow="autoplay"
+        >
+        </iframe>
+      </div>
+    </div>
+
+    <script
+      src="{% static 'youfind/jquery.min.js' %}"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="{% static 'youfind/bootstrap.min.js' %}"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
