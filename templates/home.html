@@ -19,7 +19,7 @@
   </head>
 
   <body>
-    <div class="col p-5">
+    <div class="col">
       <div class="row p-5">
         <h1 class="logo pr-5">YouFind</h1>
 
@@ -30,15 +30,19 @@
         >
           {% csrf_token %}
           <input
+            id="urlInput"
             class="form-control mr-sm-2"
             type="text"
             name="video_url"
+            value="{{ video_embed_url }}"
             placeholder="Youtube URL"
           />
           <input
+            id="keywordInput"
             class="form-control mr-sm-4"
             type="text"
             name="keyword"
+            value="{{ keyword }}"
             placeholder="Keyword to search"
           />
           <button class="btn btn-info my-2 my-sm-0" type="submit">
@@ -46,8 +50,10 @@
           </button>
         </form>
       </div>
+      {% if keyword %}
       <div class="row pl-5">
         <iframe
+          id="youtube-embed"
           width="1000"
           height="450"
           src="{{ video_embed_url }}"
@@ -55,6 +61,13 @@
         >
         </iframe>
       </div>
+      {% endif %}
+    </div>
+
+    <div class="pl-4 pt-3 pr-5">
+      {% for timestamp in timestamps %}
+      <button class="timestampButton">{{ timestamp }}</button>
+      {% endfor %}
     </div>
 
     <script
@@ -65,5 +78,19 @@
       src="{% static 'youfind/bootstrap.min.js' %}"
       crossorigin="anonymous"
     ></script>
+
+    <script type="text/javascript">
+      $(".timestampButton").click(function (event) {
+        let timestamp = this.innerText;
+        let splitTimestamp = timestamp.split(" : ");
+        let minutes = parseInt(splitTimestamp[0]),
+          seconds = parseInt(splitTimestamp[1]);
+        let startTime = minutes * 60 + seconds;
+        $("#youtube-embed").attr(
+          "src",
+          "https://www.youtube.com/embed/mYAahN1G8Y8?start=" + startTime
+        );
+      });
+    </script>
   </body>
 </html>
