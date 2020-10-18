@@ -35,3 +35,8 @@ a#logo {
   width: 22%;
   text-align: center;
 }
+
+.instructions {
+  text-align: center;
+  margin: 0% 10%;
+}
