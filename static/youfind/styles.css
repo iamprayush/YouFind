@@ -1,58 +1,42 @@
+@font-face {
+  font-family: "RobotoMono";
+  src: local("RobotoMono"), url("./fonts/RobotoMono.ttf") format("truetype");
+}
+
 body {
-  background-color: darkslategrey;
+  background-color: lightyellow;
+  font-family: "RobotoMono", monospace;
+  font-size: 1em;
 }
 
-.logo {
-  color: aliceblue;
+h3 {
+  font-weight: bold;
 }
 
-.button {
-  display: inline-flex;
-  height: 40px;
-  width: 150px;
-  border: 2px solid #bfc0c0;
-  margin: 20px 20px 20px 20px;
-  color: #bfc0c0;
-  text-transform: uppercase;
-  text-decoration: none;
-  font-size: 0.8em;
-  letter-spacing: 1.5px;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+a#logo {
+  max-width: 20%;
 }
 
-a {
-  color: #bfc0c0;
-  text-decoration: none !important;
-  letter-spacing: 1px;
+.form-inline {
+  width: 80%;
 }
 
-#button-2 {
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
+#urlInput {
+  width: 50%;
 }
 
-#button-2 a {
-  position: relative;
-  transition: all 0.35s ease-Out;
+.alert {
+  width: fit-content;
+  max-height: 30%;
+  margin: auto;
 }
 
-#slide {
-  width: 100%;
-  height: 100%;
-  left: -200px;
-  background: #bfc0c0;
-  position: absolute;
-  transition: all 0.35s ease-Out;
-  bottom: 0;
+.timestamps {
+  width: 22%;
+  text-align: center;
 }
 
-#button-2:hover #slide {
-  left: 0;
-}
-
-#button-2:hover a {
-  color: #2d3142;
+.instructions {
+  text-align: center;
+  margin: 0% 10%;
 }

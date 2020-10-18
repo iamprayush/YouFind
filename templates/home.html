@@ -19,39 +19,45 @@
   </head>
 
   <body>
-    <div class="col">
-      <div class="row p-5">
-        <h1 class="logo pr-5">YouFind</h1>
+    <div class="row">
+      <a id="logo" href="{% url 'home' %}">
+        <img
+          class="img-fluid"
+          src="{% static 'youfind/YouFind_logo.png' %}"
+          alt="YouFind Logo"
+          href
+        />
+      </a>
 
-        <form
-          class="form-inline mt-2 mt-md-0"
-          method="POST"
-          action="{% url 'home' %}"
-        >
-          {% csrf_token %}
-          <input
-            id="urlInput"
-            class="form-control mr-sm-2"
-            type="text"
-            name="video_url"
-            value="{{ video_embed_url }}"
-            placeholder="Youtube URL"
-          />
-          <input
-            id="keywordInput"
-            class="form-control mr-sm-4"
-            type="text"
-            name="keyword"
-            value="{{ keyword }}"
-            placeholder="Keyword to search"
-          />
-          <button class="btn btn-info my-2 my-sm-0" type="submit">
-            Search
-          </button>
-        </form>
-      </div>
-      {% if keyword %}
-      <div class="row pl-5">
+      <form class="form-inline" method="POST" action="{% url 'home' %}">
+        {% csrf_token %}
+        <input
+          id="urlInput"
+          class="form-control mr-sm-2"
+          type="text"
+          name="video_url"
+          value="{{ video_embed_url }}"
+          placeholder="Youtube URL"
+          required
+        />
+        <input
+          id="keywordInput"
+          class="form-control mr-sm-4"
+          type="text"
+          name="keyword"
+          value="{{ keyword }}"
+          placeholder="Keyword to search"
+          required
+        />
+        <button class="btn btn-danger" type="submit">Search</button>
+      </form>
+    </div>
+
+    {% if error_message %}
+    <div class="alert alert-danger" role="alert">{{ error_message }}</div>
+    {% elif keyword %}
+    <div class="row video-div">
+      <div class="pl-5">
         <iframe
           id="youtube-embed"
           width="1000"
@@ -61,14 +67,27 @@
         >
         </iframe>
       </div>
-      {% endif %}
+      <div class="timestamps ml-2">
+        <h3>Timestamps</h3>
+        {% for timestamp in timestamps %}
+        <button class="timestamp-button btn btn-primary mb-2">
+          {{ timestamp }}
+        </button>
+        {% endfor %}
+      </div>
     </div>
-
-    <div class="pl-4 pt-3 pr-5">
-      {% for timestamp in timestamps %}
-      <button class="timestampButton">{{ timestamp }}</button>
-      {% endfor %}
+    {% else %}
+    <div class="instructions">
+      <h2>
+        <b>Find</b> and browse through all occurrences of a word/phrase in a
+        <b>You</b>Tube video.
+      </h2>
+      <h4 class="mt-4">
+        Simply enter the URL of the YouTube video along with the keyword to
+        find, and you will get all the timestamps of when that keyword was said!
+      </h4>
     </div>
+    {% endif %}
 
     <script
       src="{% static 'youfind/jquery.min.js' %}"
@@ -80,15 +99,15 @@
     ></script>
 
     <script type="text/javascript">
-      $(".timestampButton").click(function (event) {
+      $(".timestamp-button").click(function (event) {
         let timestamp = this.innerText;
-        let splitTimestamp = timestamp.split(" : ");
+        let splitTimestamp = timestamp.split(":");
         let minutes = parseInt(splitTimestamp[0]),
           seconds = parseInt(splitTimestamp[1]);
         let startTime = minutes * 60 + seconds;
         $("#youtube-embed").attr(
           "src",
-          "https://www.youtube.com/embed/mYAahN1G8Y8?start=" + startTime
+          "https://www.youtube.com/embed/{{ video_id }}?start=" + startTime
         );
       });
     </script>

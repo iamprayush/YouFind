@@ -22,7 +22,15 @@ def get_timestamps_from_keyword(transcript, keyword):
 def convert_timestamp_to_human_readable(timestamp):
     # The timestamp denotes the number of seconds elapsed.
     minutes, seconds = timestamp // 60, timestamp % 60
-    return "%s : %s" % (minutes, seconds)
+    return "%s:%s" % (str(minutes).rjust(2, "0"), str(seconds).rjust(2, "0"))
+
+
+def clean_error(error):
+    try:
+        clean_error = error.CAUSE_MESSAGE
+    except AttributeError:
+        clean_error = "Invalid Youtube URL"
+    return "Error: %s" % clean_error
 
 
 def home(request):
@@ -35,9 +43,11 @@ def home(request):
             video_id = get_id_from_url(video_url)
             transcript = YouTubeTranscriptApi.get_transcript(video_id)
             timestamps = get_timestamps_from_keyword(transcript, keyword)
-        except Exception as e:
-            print("Error: %s" % e)
+        except Exception as error:
+            context["error_message"] = clean_error(error)
+            return render(request, "home.html", context)
 
+        context["video_id"] = video_id
         context["keyword"] = keyword
         context["timestamps"] = list(
             map(convert_timestamp_to_human_readable, timestamps)
